@@ -1,0 +1,10 @@
+<section>
+    <div>
+        <p>👍GoodAgiota</p>
+    </div>
+    <div>
+        @for (route of routes; track route.path) {
+        <ga-side-bar-route [name]="route.name" [path]="route.path" [icon]="route.icon" />
+        }
+    </div>
+</section>
