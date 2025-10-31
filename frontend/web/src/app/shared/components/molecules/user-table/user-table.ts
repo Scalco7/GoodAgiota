@@ -23,7 +23,7 @@ export interface IUserTableRow {
   templateUrl: './user-table.html',
   styleUrl: './user-table.scss',
 })
-export class UserTable {
+export class UserTableComponent {
   public users: IUserTableRow[] = [
     {
       name: 'Janderson',
