@@ -14,6 +14,6 @@
 08. O sistema deve exibir quantas pessoas estão devendo.
 
 ### Empréstimos
-09. O sistema deve permitir o cadastro de empréstimos com: "data do empréstimo", "código da moeda", "Valor", "Taxa de conversão atual", "Data de vencimento", "Taxa de juros mensal", "usuário que vai receber o empréstimo".
+09. O sistema deve permitir o cadastro de empréstimos com: "data do empréstimo", "código da moeda", "valor", "Taxa de conversão atual", "Data de vencimento", "Taxa de juros mensal", "usuário que vai receber o empréstimo".
 10. O sistema deve permitir a quitação do empréstimos.
 11. O sistema deve exibir os empréstimos cadastrados.
