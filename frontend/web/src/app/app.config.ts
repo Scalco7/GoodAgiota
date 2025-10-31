@@ -11,7 +11,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes), provideClientHydration(withEventReplay()),
     providePrimeNG({
       theme: {
-        preset: Agio
+        preset: Agio,
+        options: {
+          darkModeSelector: false || 'none'
+        }
       }
     })
   ]
