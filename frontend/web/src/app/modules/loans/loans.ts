@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-loans',
+  selector: 'ga-loans',
   imports: [],
   templateUrl: './loans.html',
   styleUrl: './loans.scss',
 })
-export class Loans {
+export class LoansPage {
 
 }

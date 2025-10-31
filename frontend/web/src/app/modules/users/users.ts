@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-users',
+  selector: 'ga-users',
   imports: [],
   templateUrl: './users.html',
   styleUrl: './users.scss',
 })
-export class Users {
+export class UsersPage {
 
 }
