@@ -4,6 +4,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
+  standalone: true,
   selector: 'ga-users',
   imports: [UserTable, FontAwesomeModule],
   templateUrl: './users.html',

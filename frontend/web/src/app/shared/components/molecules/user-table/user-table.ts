@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
-import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { AvatarModule } from 'primeng/avatar';
+import { TagModule } from 'primeng/tag';
 
 enum EUserStatus {
-  NO_DEBT = "Sem Débitos",
-  PAYING = "Pagando",
-  OWING = "Devendo"
+  NO_DEBT = "no_debt",
+  PAYING = "paying",
+  OWING = "owing"
 }
 
 export interface IUserTableRow {
@@ -18,14 +17,13 @@ export interface IUserTableRow {
 }
 
 @Component({
+  standalone: true,
   selector: 'ga-user-table',
-  imports: [TableModule, CommonModule, FaIconComponent, AvatarModule],
+  imports: [TableModule, CommonModule, AvatarModule, TagModule],
   templateUrl: './user-table.html',
   styleUrl: './user-table.scss',
 })
 export class UserTable {
-  faUser = faUser
-
   public users: IUserTableRow[] = [
     {
       name: 'Janderson',
