@@ -4,6 +4,7 @@ import { providePrimeNG } from 'primeng/config';
 import { Agio } from './shared/css-theme/agio.preset';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),

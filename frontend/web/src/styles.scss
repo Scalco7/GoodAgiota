@@ -1,2 +1,19 @@
 @use "tailwindcss";
 @use "primeicons/primeicons.css";
+
+body {
+    height: 100vh;
+    width: 100vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-family: var(--p-font-family);
+    color: var(--p-text-color);
+}
+
+.poppins {
+    font-family: "Poppins", sans-serif;
+}
+
+.inter {
+    font-family: "Inter", sans-serif;
+}
