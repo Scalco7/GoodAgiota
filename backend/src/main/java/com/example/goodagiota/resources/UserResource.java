@@ -16,7 +16,6 @@ import com.example.goodagiota.entities.User;
 import com.example.goodagiota.services.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,10 +28,7 @@ public class UserResource {
     @Autowired
     private UserService service;
 
-    @Operation(summary = "Listar todos os conteúdos", responses = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso.", content = @io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json", schema = @Schema(implementation = User.class)))
-    })
-
+    @Operation(summary = "Lista todos os usuários")
     @GetMapping
     public ResponseEntity<ApiResponse<List<User>>> findAll() {
         List<User> list = service.findAll();
@@ -40,6 +36,7 @@ public class UserResource {
         return ResponseEntity.ok().body(response);
     }
 
+    @Operation(summary = "Cria um usuário")
     @PostMapping()
     public ResponseEntity<ApiResponse<User>> create(@RequestBody UserDataRequest userRequest) {
         User user = service.create(userRequest);
@@ -47,6 +44,7 @@ public class UserResource {
         return ResponseEntity.ok().body(response);
     }
 
+    @Operation(summary = "Atualiza os dados de um usuário")
     @PostMapping("/{userId}")
     public ResponseEntity<ApiResponse<User>> update(@PathVariable String userId,
             @RequestBody UserDataRequest userRequest) {
@@ -55,6 +53,7 @@ public class UserResource {
         return ResponseEntity.ok().body(response);
     }
 
+    @Operation(summary = "Apaga um usuário")
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponse<String>> delete(@PathVariable String userId) {
         service.delete(userId);
