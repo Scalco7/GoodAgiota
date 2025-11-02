@@ -1,9 +1,16 @@
-<main class="flex flex-col items-start justify-start gap-20 px-10 py-20">
-    <div class="flex gap-3 items-center justify-start">
-        <fa-icon [icon]="faUsers" size="2x" />
-        <h1 class="font-bold text-2xl">Usuários</h1>
+<main class="flex flex-col items-start justify-start gap-7 px-15 pt-20 w-full h-full">
+    <div class="flex items-center justify-between w-full border-b border-gray-300 py-3 px-2">
+        <div class="flex gap-3 items-center justify-start">
+            <i class="pi pi-users" style="font-size: 2.5rem; display: flex; align-items: center;"></i>
+            <h1 class="font-medium text-4xl poppins">Usuários</h1>
+        </div>
+        <p-button>
+            <i class="pi pi-plus-circle" style="font-size: 1rem; display: flex; align-items: center;"></i>
+            Novo Usuário
+        </p-button>
     </div>
-    <div class="w-full flex justify-center">
+
+    <div class="w-full flex justify-center inter">
         <ga-user-table />
     </div>
 </main>

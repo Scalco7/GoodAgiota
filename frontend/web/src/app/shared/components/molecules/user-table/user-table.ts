@@ -1,8 +1,13 @@
 import { Component } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
-import { AvatarModule } from 'primeng/avatar';
 import { TagModule } from 'primeng/tag';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectModule } from 'primeng/select';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 enum EUserStatus {
   NO_DEBT = "no_debt",
@@ -19,11 +24,13 @@ export interface IUserTableRow {
 @Component({
   standalone: true,
   selector: 'ga-user-table',
-  imports: [TableModule, CommonModule, AvatarModule, TagModule],
+  imports: [CommonModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, FormsModule, ReactiveFormsModule],
   templateUrl: './user-table.html',
   styleUrl: './user-table.scss',
 })
 export class UserTableComponent {
+  statusSelectValue = null
+
   public users: IUserTableRow[] = [
     {
       name: 'Janderson',
@@ -41,4 +48,21 @@ export class UserTableComponent {
       status: EUserStatus.PAYING
     },
   ]
+
+  public statuses = [
+    { label: 'Sem Débito', value: EUserStatus.NO_DEBT },
+    { label: 'Pagando', value: EUserStatus.OWING },
+    { label: 'Devendo', value: EUserStatus.PAYING }
+  ]
+
+  public getTagSeverity(status: EUserStatus) {
+    switch (status) {
+      case EUserStatus.NO_DEBT:
+        return 'success'
+      case EUserStatus.OWING:
+        return 'warn'
+      case EUserStatus.PAYING:
+        return 'danger'
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import { definePreset } from '@primeuix/themes';
-import Lara from '@primeuix/themes/lara';
+import Aura from '@primeuix/themes/aura';
 
-export const Agio = definePreset(Lara, {
+export const Agio = definePreset(Aura, {
     //Your customizations, see the following sections for examples
 });
