@@ -6,13 +6,17 @@
 }
 
 .side-bar-container {
+    color: var(--p-text-secondary-color);
     position: relative;
     z-index: 1;
 }
 
+.side-bar-container.c-selected {
+    color: var(--p-primary-color);
+}
+
 .selected {
     background-color: var(--p-surface-0);
-    color: var(--p-primary-color);
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
 }
