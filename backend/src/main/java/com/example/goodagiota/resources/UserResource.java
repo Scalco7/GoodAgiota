@@ -4,21 +4,23 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.goodagiota.dtos.ApiResponse;
-import com.example.goodagiota.dtos.user.CreateUserRequest;
+import com.example.goodagiota.dtos.user.UserDataRequest;
 import com.example.goodagiota.entities.User;
 import com.example.goodagiota.services.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 
 @RestController
 @RequestMapping(value = "/users")
@@ -38,10 +40,25 @@ public class UserResource {
         return ResponseEntity.ok().body(response);
     }
 
-    @PostMapping()    
-    public ResponseEntity<ApiResponse<User>> create(@RequestBody CreateUserRequest userRequest) {
+    @PostMapping()
+    public ResponseEntity<ApiResponse<User>> create(@RequestBody UserDataRequest userRequest) {
         User user = service.create(userRequest);
         ApiResponse<User> response = new ApiResponse<>(user);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/{userId}")
+    public ResponseEntity<ApiResponse<User>> update(@PathVariable String userId,
+            @RequestBody UserDataRequest userRequest) {
+        User user = service.update(userId, userRequest);
+        ApiResponse<User> response = new ApiResponse<>(user);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<ApiResponse<String>> delete(@PathVariable String userId) {
+        service.delete(userId);
+        ApiResponse<String> response = new ApiResponse<>(null);
         return ResponseEntity.ok().body(response);
     }
 }
