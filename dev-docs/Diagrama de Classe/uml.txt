@@ -1,0 +1,20 @@
+@startuml
+class User{
+    id: string
+    name: string
+    phone: string
+}
+class Loan{
+    user: User
+    value: float
+    loanDate: Date
+    dueDate: Date
+    paid: boolean
+    paidDate: Date
+    coinCode: string
+    currencyConversionRate: float
+    loanRate: float
+}
+
+User "1" -- "*" Loan
+@enduml
