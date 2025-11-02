@@ -5,3 +5,8 @@
 .side-bar p {
     color: var(--p-text-secondary-color);
 }
+
+img {
+    object-fit: contain;
+    width: 30px;
+}
