@@ -8,7 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { getPhoneMask } from '../../../helpers/get-phone-mask';
+import { Formatter } from '../../../helpers/formatter';
 
 enum EUserStatus {
   NO_DEBT = "no_debt",
@@ -30,7 +30,7 @@ export interface IUserTableRow {
   styleUrl: './user-table.scss',
 })
 export class UserTableComponent {
-  public getPhoneMask = getPhoneMask
+  public formatPhone = Formatter.formatPhone
   statusSelectValue = null
 
   public users: IUserTableRow[] = [
