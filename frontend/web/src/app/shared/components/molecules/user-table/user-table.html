@@ -41,7 +41,7 @@
             <td>
                 {{ user.name }}
             </td>
-            <td>{{ user.phone }}</td>
+            <td>{{ getPhoneMask(user.phone) }}</td>
             <td class="text-center">
                 @switch (user.status) {
                 @case ("no_debt") {
