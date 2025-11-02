@@ -1,4 +1,16 @@
-<div (click)="onClick()" class="flex gap-3">
-    <i [class]="'pi ' + icon"></i>
-    <p>{{name}}</p>
+<div (click)="onClick()" class="relative full-container h-12" [ngClass]="{'selected': selected}">
+    @if(selected){
+    <div class="fill-border top-border -top-10 w-full h-10">
+        <div class="radius-border w-full h-full"></div>
+    </div>
+    <div class="fill-border bottom-border -bottom-10 w-full h-10">
+        <div class="radius-border w-full h-full"></div>
+    </div>
+    }
+
+    <div class="side-bar-container flex gap-3 cursor-pointer h-full items-center ps-3">
+        <i [class]="`pi ${icon}`" style="font-size: 1.3rem; display: flex; align-items: center;"></i>
+        <p class="text-side-bar inter flex">{{name}}</p>
+    </div>
+
 </div>
