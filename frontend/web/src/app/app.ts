@@ -2,12 +2,13 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PrimeNG } from 'primeng/config';
 import { Toast } from 'primeng/toast';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 
 
 @Component({
   standalone: true,
   selector: 'app-root',
-  imports: [RouterOutlet, Toast],
+  imports: [RouterOutlet, Toast, ConfirmDialog],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

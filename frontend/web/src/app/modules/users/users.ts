@@ -1,15 +1,16 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { UserTableComponent } from "../../shared/components/molecules/user-table/user-table";
 import { Button } from "primeng/button";
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { RequestsHandlerService } from '../../shared/handlers/request/request-handler.service';
 import { ListUsersRequest } from '../../api/users/list-users/list-users.request';
 import { IUserResponse } from '../../api/users/list-users/list-users.interface';
 import { UserData, UserModalComponent } from "../../shared/components/molecules/user-modal/user-modal";
 import { ICreateUserRequest } from '../../api/users/create-user/create-user.interface';
-import { CrateUserRequest } from '../../api/users/create-user/create-user.requet';
+import { CrateUserRequest } from '../../api/users/create-user/create-user.request';
 import { IUpdateUserRequest } from '../../api/users/update-user/update-user.interface';
-import { UpdateUserRequest } from '../../api/users/update-user/update-user.requet';
+import { UpdateUserRequest } from '../../api/users/update-user/update-user.request';
+import { DeleteUserRequest } from '../../api/users/delete-user/delete-user.request';
 
 @Component({
   standalone: true,
@@ -20,6 +21,7 @@ import { UpdateUserRequest } from '../../api/users/update-user/update-user.reque
 })
 export class UsersPage implements OnInit {
   private messageService = inject(MessageService);
+  private confirmationService = inject(ConfirmationService);
   private requestsService = inject(RequestsHandlerService);
 
   @ViewChild(UserModalComponent) userModal!: UserModalComponent;
@@ -75,6 +77,20 @@ export class UsersPage implements OnInit {
     });
   }
 
+  private deleteUser(userId: string) {
+    this.requestsService.handle(new DeleteUserRequest(userId)).subscribe({
+      next: (result) => {
+        this.messageService.add({ severity: 'success', summary: "Usuário removido", detail: `Usuário removido com sucesso.`, life: 3000 });
+        this.fetchUsers();
+        this.userModal.close();
+      },
+      error: (error) => {
+        console.log(error)
+        this.messageService.add({ severity: 'error', summary: error.title, detail: error.message, life: 3000 });
+      },
+    });
+  }
+
   public openUserModalCreate() {
     this.userModal.open();
   }
@@ -89,5 +105,32 @@ export class UsersPage implements OnInit {
 
   public handleOnEditUser(user: UserData) {
     this.updateUser(user, user.id);
+  }
+
+  public handleOnDeleteUser(user: IUserResponse) {
+    this.deleteUser(user.id);
+  }
+
+  public openDeleteUserConfirmDialog(user: IUserResponse) {
+    this.confirmationService.confirm({
+      message: `Você realmente quer deletar o(a) ${user.name}?`,
+      header: 'Zona de perigo',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'Cancelar',
+      rejectButtonProps: {
+        label: 'Cancelar',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Deletar',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.handleOnDeleteUser(user);
+      },
+      reject: () => {},
+    });
   }
 }

@@ -4,7 +4,7 @@ import { providePrimeNG } from 'primeng/config';
 import { Agio } from './shared/css-theme/agio.preset';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
@@ -25,6 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     importProvidersFrom(ToastModule),
     MessageService,
+    ConfirmationService,
     provideHttpClient(),
   ]
 };

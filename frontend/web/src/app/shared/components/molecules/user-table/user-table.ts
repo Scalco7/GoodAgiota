@@ -24,6 +24,7 @@ export class UserTableComponent {
 
   @Input() users: IUserResponse[] = []
   @Output() editUser: EventEmitter<IUserResponse> = new EventEmitter<IUserResponse>()
+  @Output() deleteUser: EventEmitter<IUserResponse> = new EventEmitter<IUserResponse>()
 
   statusSelectValue = null
 
@@ -46,5 +47,9 @@ export class UserTableComponent {
 
   public handleEditUser(user: IUserResponse){
     this.editUser.emit(user)
+  }
+
+  public handleDeleteUser(user: IUserResponse){
+    this.deleteUser.emit(user)
   }
 }

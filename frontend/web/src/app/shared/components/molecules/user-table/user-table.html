@@ -56,10 +56,11 @@
                 }
                 }
             </td>
-            <td>
-                <p-button (onClick)="handleEditUser(user)">
-                    <i class="pi pi-pen-to-square"></i>
-                </p-button>
+            <td class="flex gap-5">
+                <p-button (onClick)="handleEditUser(user)" icon="pi pi-pen-to-square" [outlined]="true"></p-button>
+
+                <p-button (onClick)="handleDeleteUser(user)" [outlined]="true" icon="pi pi-trash" severity="danger"
+                    [disabled]="user.status != 'NO_DEBT'"></p-button>
             </td>
         </tr>
     </ng-template>
