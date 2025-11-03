@@ -6,7 +6,7 @@ import { environment } from "../../../../environments/environment";
 import { IRequestResult } from "../../../shared/handlers/request/request-result.interface";
 import { EErrorCode } from "../../../shared/enums/error-code.enum";
 
-export class ListUsersQuery implements IRequest<IUserResponse[]> {
+export class ListUsersRequest implements IRequest<IUserResponse[]> {
     constructor() { }
 
     execute(

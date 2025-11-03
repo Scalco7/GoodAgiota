@@ -3,7 +3,7 @@ import { UserTableComponent } from "../../shared/components/molecules/user-table
 import { Button } from "primeng/button";
 import { MessageService } from 'primeng/api';
 import { RequestsHandlerService } from '../../shared/handlers/request/request-handler.service';
-import { ListUsersQuery } from '../../api/users/list-users/list-users.request';
+import { ListUsersRequest } from '../../api/users/list-users/list-users.request';
 import { IUserResponse } from '../../api/users/list-users/list-users.interface';
 
 @Component({
@@ -24,10 +24,9 @@ export class UsersPage implements OnInit {
   }
 
   private fetchUsers() {
-    this.requestsService.handle(new ListUsersQuery()).subscribe({
+    this.requestsService.handle(new ListUsersRequest()).subscribe({
       next: (result) => {
         this.users = result.resultData;
-        console.log(this.users)
       },
       error: (error) => {
         console.log(error)
