@@ -57,4 +57,20 @@ public class LoanResource {
         ApiResponse<String> response = new ApiResponse<>(null);
         return ResponseEntity.ok().body(response);
     }
+
+    @Operation(summary = "Retorna a quantidade de empréstimos pagos")
+    @GetMapping("/quantity/paid-loans")
+    public ResponseEntity<ApiResponse<Long>> getQuantityOfPaidLoans() {
+        Long quantity = service.getQuantityOfPaidLoans();
+        ApiResponse<Long> response = new ApiResponse<>(quantity);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @Operation(summary = "Retorna a quantidade de empréstimos não pagos")
+    @GetMapping("/quantity/unpaid-loans")
+    public ResponseEntity<ApiResponse<Long>> getQuantityOfUnpaidLoans() {
+        Long quantity = service.getQuantityOfUnpaidLoans();
+        ApiResponse<Long> response = new ApiResponse<>(quantity);
+        return ResponseEntity.ok().body(response);
+    }
 }

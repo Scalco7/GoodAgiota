@@ -126,4 +126,11 @@ public class LoanService {
         loanRepository.saveAll(loans);
     }
 
+    public Long getQuantityOfPaidLoans() {
+        return loanRepository.countPaidLoans();
+    }
+
+    public Long getQuantityOfUnpaidLoans() {
+        return loanRepository.countUnpaidLoans();
+    }
 }

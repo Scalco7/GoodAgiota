@@ -8,8 +8,8 @@
 04. O sistema deve exibir os usuários cadastrados.
 
 ### Dashboard
-05. O sistema deve exibir quanto dinheiro já foi recebido dos empréstimos.
-06. O sistema deve exibir quanto ainda vai ser recebido.
+05. O sistema deve exibir a quantidade de empréstimos que já foram pagos.
+06. O sistema deve exibir a quantidade de empréstimos que ainda não foram pagos.
 07. O sistema deve exibir um gráfico com quanto vai ser recebido nos próximos meses.
 08. O sistema deve exibir quantas pessoas estão devendo.
 

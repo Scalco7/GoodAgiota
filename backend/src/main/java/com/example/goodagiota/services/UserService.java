@@ -122,4 +122,8 @@ public class UserService {
 
         userRepository.saveAll(users);
     }
+
+    public Long getQuantityOfUsersWithUnpaidLoans() {
+        return userRepository.countUsersWithUnpaidLoans();
+    }
 }

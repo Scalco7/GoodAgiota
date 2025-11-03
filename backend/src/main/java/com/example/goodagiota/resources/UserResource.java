@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -45,7 +46,7 @@ public class UserResource {
     }
 
     @Operation(summary = "Atualiza os dados de um usuário")
-    @PostMapping("/{userId}")
+    @PutMapping("/{userId}")
     public ResponseEntity<ApiResponse<User>> update(@PathVariable String userId,
             @RequestBody UserDataRequest userRequest) {
         User user = service.update(userId, userRequest);
@@ -66,6 +67,14 @@ public class UserResource {
     public ResponseEntity<ApiResponse<String>> mockData() {
         service.mockData();
         ApiResponse<String> response = new ApiResponse<>(null);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @Operation(summary = "Retorna a quantidade de usuários com empréstimos não pagos")
+    @GetMapping("/users-quantity/unpaid-loans")
+    public ResponseEntity<ApiResponse<Long>> getQuantityOfUsersWithUnpaidLoans() {
+        Long quantity = service.getQuantityOfUsersWithUnpaidLoans();
+        ApiResponse<Long> response = new ApiResponse<>(quantity);
         return ResponseEntity.ok().body(response);
     }
 }
