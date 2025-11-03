@@ -72,4 +72,13 @@ public class LoanService {
         return loanRepository.save(newLoan);
     }
 
+    public Loan payLoan(String loanId) {
+        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new InvalidRequestException(
+                "Id do empréstimo informado inexistente."));
+
+        loan.setPaid(true);
+        loan.setPaidDate(new Date());
+        loan.setUpdatedDate(new Date());
+        return loanRepository.save(loan);
+    }
 }

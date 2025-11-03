@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,8 +37,16 @@ public class LoanResource {
     @Operation(summary = "Cria um empréstimo")
     @PostMapping()
     public ResponseEntity<ApiResponse<Loan>> create(@RequestBody LoanDataRequest loanRequest) {
-        Loan user = service.create(loanRequest);
-        ApiResponse<Loan> response = new ApiResponse<>(user);
+        Loan loan = service.create(loanRequest);
+        ApiResponse<Loan> response = new ApiResponse<>(loan);
+        return ResponseEntity.ok().body(response);
+    }
+
+        @Operation(summary = "Paga o empréstimo")
+    @PostMapping("/pay/{loanId}")
+    public ResponseEntity<ApiResponse<Loan>> payLoan(@PathVariable String loanId) {
+        Loan loan = service.payLoan(loanId);
+        ApiResponse<Loan> response = new ApiResponse<>(loan);
         return ResponseEntity.ok().body(response);
     }
 }
