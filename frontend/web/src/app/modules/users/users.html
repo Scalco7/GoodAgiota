@@ -4,15 +4,16 @@
             <i class="pi pi-users" style="font-size: 2.5rem; display: flex; align-items: center;"></i>
             <h1 class="font-medium text-4xl poppins">Usuários</h1>
         </div>
-        <p-button (onClick)="handleCreateNewUser()">
+        <p-button (onClick)="openUserModalCreate()">
             <i class="pi pi-plus-circle" style="font-size: 1rem; display: flex; align-items: center;"></i>
             Novo Usuário
         </p-button>
     </div>
 
     <div class="w-full flex justify-center inter">
-        <ga-user-table [users]="users"/>
+        <ga-user-table [users]="users" />
     </div>
 </main>
 
-<ga-user-modal [(isVisible)]="showUserModal"></ga-user-modal>
+<ga-user-modal [(isVisible)]="showUserModal" [user]="selectedUser" (createUser)="handleOnCreateUser($event)"
+    (editUser)="handleOnEditUser($event)"></ga-user-modal>

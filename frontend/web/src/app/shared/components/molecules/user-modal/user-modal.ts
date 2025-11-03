@@ -6,15 +6,10 @@ import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } 
 import { InputMaskModule } from 'primeng/inputmask';
 import { MessageService } from 'primeng/api';
 import { getFormErrorMessage } from '../../../helpers/get-form-error-message';
+import { ICreateUserRequest } from '../../../../api/users/create-user/create-user.interface';
 
-
-interface UserData {
+export interface UserData {
   id: string
-  name: string
-  phone: string
-}
-
-interface CreateUserData {
   name: string
   phone: string
 }
@@ -34,8 +29,10 @@ export class UserModalComponent {
 
   @Input() user?: UserData;
 
-  @Output() createUser: EventEmitter<CreateUserData> = new EventEmitter<CreateUserData>();
+  @Output() createUser: EventEmitter<ICreateUserRequest> = new EventEmitter<ICreateUserRequest>();
   @Output() editUser: EventEmitter<UserData> = new EventEmitter<UserData>();
+
+  public isLoading: boolean = false;
 
   public userForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -44,6 +41,7 @@ export class UserModalComponent {
 
   private resetForm() {
     this.userForm.reset();
+    this.isLoading = false;
   }
 
   private validateForm(): void {
@@ -65,8 +63,12 @@ export class UserModalComponent {
   }
 
   public handleSave() {
+    this.isLoading = true;
     this.validateForm();
-    if (!this.userForm.valid) return
+    if (!this.userForm.valid) {
+      this.isLoading = false;
+      return
+    }
 
     if (this.user) {
       const userData: UserData = {
@@ -77,7 +79,7 @@ export class UserModalComponent {
       this.editUser.emit(userData)
     }
     else {
-      const userData: CreateUserData = {
+      const userData: ICreateUserRequest = {
         name: this.userForm.value.name!,
         phone: this.userForm.value.phone!.replace(/\D/g, '')
       }
