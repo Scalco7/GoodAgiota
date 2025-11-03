@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { TagModule } from 'primeng/tag';
@@ -9,18 +9,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Formatter } from '../../../helpers/formatter';
-
-enum EUserStatus {
-  NO_DEBT = "no_debt",
-  PAYING = "paying",
-  OWING = "owing"
-}
-
-export interface IUserTableRow {
-  name: string
-  phone: string
-  status: EUserStatus
-}
+import { EUserStatus, IUserResponse } from '../../../../api/users/list-users/list-users.interface';
 
 @Component({
   standalone: true,
@@ -31,30 +20,15 @@ export interface IUserTableRow {
 })
 export class UserTableComponent {
   public formatPhone = Formatter.formatPhone
-  statusSelectValue = null
 
-  public users: IUserTableRow[] = [
-    {
-      name: 'Janderson',
-      phone: '44995868988',
-      status: EUserStatus.NO_DEBT
-    },
-    {
-      name: 'Jefferson',
-      phone: '44995868988',
-      status: EUserStatus.OWING
-    },
-    {
-      name: 'Raphael',
-      phone: '44995868988',
-      status: EUserStatus.PAYING
-    },
-  ]
+  @Input() users: IUserResponse[] = []
+
+  statusSelectValue = null
 
   public statuses = [
     { label: 'Sem Débito', value: EUserStatus.NO_DEBT },
-    { label: 'Pagando', value: EUserStatus.OWING },
-    { label: 'Devendo', value: EUserStatus.PAYING }
+    { label: 'Pagando', value: EUserStatus.PAYING },
+    { label: 'Devendo', value: EUserStatus.OWING }
   ]
 
   public getTagSeverity(status: EUserStatus) {
@@ -62,9 +36,9 @@ export class UserTableComponent {
       case EUserStatus.NO_DEBT:
         return 'success'
       case EUserStatus.OWING:
-        return 'warn'
-      case EUserStatus.PAYING:
         return 'danger'
+      case EUserStatus.PAYING:
+        return 'warn'
     }
   }
 }

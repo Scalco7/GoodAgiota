@@ -1,5 +1,5 @@
-<p-table #dt2 dataKey="name" [value]="users" [paginator]="true" [rows]="8" [globalFilterFields]="['name', 'phone', 'status']"
-    [tableStyle]="{ 'min-width': '70rem'}" class="inter">
+<p-table #dt2 dataKey="name" [value]="users" [paginator]="true" [rows]="6"
+    [globalFilterFields]="['name', 'phone', 'status']" [tableStyle]="{ 'min-width': '70rem'}" class="inter">
     <ng-template #header>
         <tr>
             <th>#</th>
@@ -22,8 +22,8 @@
             <th>
                 <p-columnFilter field="status" matchMode="equals" [showMenu]="false">
                     <ng-template #filter let-filter="filterCallback">
-                        <p-select  [options]="statuses" (onChange)="filter($event.value)"
-                            placeholder="Selecione" [showClear]="true" style="min-width: 12rem">
+                        <p-select [options]="statuses" (onChange)="filter($event.value)" placeholder="Selecione"
+                            [showClear]="true" style="min-width: 12rem">
                             <ng-template let-option #item>
                                 <p-tag [value]="option.value" [severity]="getTagSeverity(option.value)" />
                             </ng-template>
@@ -44,10 +44,10 @@
             <td>{{ formatPhone(user.phone) }}</td>
             <td class="text-center">
                 @switch (user.status) {
-                @case ("no_debt") {
+                @case ("NO_DEBT") {
                 <p-tag [severity]="getTagSeverity(user.status)" value="Sem Débito" [rounded]="true" />
                 }
-                @case ("paying") {
+                @case ("PAYING") {
                 <p-tag [severity]="getTagSeverity(user.status)" value="Pagando" [rounded]="true" />
                 }
                 @default {
@@ -55,6 +55,11 @@
                 }
                 }
             </td>
+        </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+        <tr>
+            <td colspan="4">Nenhum usuário cadastrado.</td>
         </tr>
     </ng-template>
 </p-table>

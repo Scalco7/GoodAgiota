@@ -1,7 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { UserTableComponent } from "../../shared/components/molecules/user-table/user-table";
 import { Button } from "primeng/button";
 import { MessageService } from 'primeng/api';
+import { RequestsHandlerService } from '../../shared/handlers/request/request-handler.service';
+import { ListUsersQuery } from '../../api/users/list-users/list-users.request';
+import { IUserResponse } from '../../api/users/list-users/list-users.interface';
 
 @Component({
   standalone: true,
@@ -10,10 +13,31 @@ import { MessageService } from 'primeng/api';
   templateUrl: './users.html',
   styleUrl: './users.scss',
 })
-export class UsersPage {
+export class UsersPage implements OnInit {
   private messageService = inject(MessageService);
+  private requestsService = inject(RequestsHandlerService);
+
+  public users: IUserResponse[] = []
+
+  ngOnInit(): void {
+      this.fetchUsers()
+  }
+
+  private fetchUsers() {
+    this.requestsService.handle(new ListUsersQuery()).subscribe({
+      next: (result) => {
+        this.users = result.resultData;
+        console.log(this.users)
+      },
+      error: (error) => {
+        console.log(error)
+        this.messageService.add({ severity: 'error', summary: error.title, detail: error.message, life: 3000 });
+      },
+    });
+  }
+
 
   public handleCreateNewUser() {
-    this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Message Content', life: 3000 });
+    
   }
 }
