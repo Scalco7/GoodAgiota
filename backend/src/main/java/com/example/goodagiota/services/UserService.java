@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.goodagiota.dtos.user.UserDataRequest;
+import com.example.goodagiota.dtos.user.UserResponse;
 import com.example.goodagiota.entities.User;
 import com.example.goodagiota.exceptions.IncompleteRequestException;
 import com.example.goodagiota.exceptions.InvalidRequestException;
@@ -23,8 +24,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserResponse> findAll() {
+        return userRepository.findAllUsersWithStatus();
     }
 
     public User create(UserDataRequest userRequest) {

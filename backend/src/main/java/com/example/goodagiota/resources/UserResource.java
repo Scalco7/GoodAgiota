@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.goodagiota.dtos.ApiResponse;
 import com.example.goodagiota.dtos.user.UserDataRequest;
+import com.example.goodagiota.dtos.user.UserResponse;
 import com.example.goodagiota.entities.User;
 import com.example.goodagiota.services.UserService;
 
@@ -31,9 +32,9 @@ public class UserResource {
 
     @Operation(summary = "Lista todos os usuários")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<User>>> findAll() {
-        List<User> list = service.findAll();
-        ApiResponse<List<User>> response = new ApiResponse<>(list);
+    public ResponseEntity<ApiResponse<List<UserResponse>>> findAll() {
+        List<UserResponse> list = service.findAll();
+        ApiResponse<List<UserResponse>> response = new ApiResponse<>(list);
         return ResponseEntity.ok().body(response);
     }
 

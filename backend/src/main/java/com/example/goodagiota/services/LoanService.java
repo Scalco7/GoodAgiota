@@ -110,7 +110,7 @@ public class LoanService {
             loan.setLoanDate(loanDate);
 
             Date dueDate = Date
-                    .from(now.minusMonths(random.nextInt(5, 60)).atZone(ZoneId.systemDefault()).toInstant());
+                    .from(now.plusMonths(random.nextInt(5, 60)).atZone(ZoneId.systemDefault()).toInstant());
             loan.setDueDate(dueDate);
 
             loan.setPaid(false);
