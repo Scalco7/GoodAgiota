@@ -1,9 +1,12 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 import { Agio } from './shared/css-theme/agio.preset';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,6 +20,9 @@ export const appConfig: ApplicationConfig = {
           darkModeSelector: false || 'none'
         }
       }
-    })
+    }),
+    provideAnimations(),
+    importProvidersFrom(ToastModule),
+    MessageService
   ]
 };
