@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping(value = "/loans")
 @Tag(name = "Empréstimos", description = "Endpoints relacionados à gestão de empréstimos.")
 public class LoanResource {
-        @Autowired
+    @Autowired
     private LoanService service;
 
     @Operation(summary = "Lista todos os empréstimos")
@@ -42,11 +42,19 @@ public class LoanResource {
         return ResponseEntity.ok().body(response);
     }
 
-        @Operation(summary = "Paga o empréstimo")
+    @Operation(summary = "Paga o empréstimo")
     @PostMapping("/pay/{loanId}")
     public ResponseEntity<ApiResponse<Loan>> payLoan(@PathVariable String loanId) {
         Loan loan = service.payLoan(loanId);
         ApiResponse<Loan> response = new ApiResponse<>(loan);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @Operation(summary = "Mocka dados de empréstimos")
+    @PostMapping("/mock")
+    public ResponseEntity<ApiResponse<String>> mockData() {
+        service.mockData();
+        ApiResponse<String> response = new ApiResponse<>(null);
         return ResponseEntity.ok().body(response);
     }
 }

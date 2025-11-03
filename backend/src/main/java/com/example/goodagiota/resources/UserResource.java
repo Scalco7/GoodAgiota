@@ -60,4 +60,12 @@ public class UserResource {
         ApiResponse<String> response = new ApiResponse<>(null);
         return ResponseEntity.ok().body(response);
     }
+
+    @Operation(summary = "Mocka dados de usuários")
+    @PostMapping("/mock")
+    public ResponseEntity<ApiResponse<String>> mockData() {
+        service.mockData();
+        ApiResponse<String> response = new ApiResponse<>(null);
+        return ResponseEntity.ok().body(response);
+    }
 }

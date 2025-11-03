@@ -1,7 +1,9 @@
 package com.example.goodagiota.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,5 +73,53 @@ public class UserService {
 
     public void delete(String userId) {
         userRepository.deleteById(userId);
+    }
+
+    public void mockData() {
+        Random random = new Random();
+
+        List<String> userNames = List.of(
+                "Ana", "Bruno", "Carla", "Daniel", "Eduardo",
+                "Fernanda", "Gabriel", "Helena", "Igor", "Juliana",
+                "Lucas", "Mariana", "Nathalia", "Otávio", "Paula",
+                "Rafael", "Sabrina", "Tiago", "Vanessa", "William",
+                "Yasmin", "Zeca", "Alice", "Breno", "Camila",
+                "Diego", "Elisa", "Felipe", "Gustavo", "Heloísa",
+                "Isabela", "João", "Karen", "Leonardo", "Márcia",
+                "Natália", "Pedro", "Renata", "Samuel", "Tatiana",
+                "Vitor", "Wellington", "Yara", "Zuleica", "Amanda",
+                "Bruna", "Caio", "Débora", "Enzo", "Fabiana");
+
+        List<String> userLastNames = List.of(
+                "Silva", "Santos", "Oliveira", "Souza", "Lima",
+                "Pereira", "Ferreira", "Almeida", "Costa", "Gomes",
+                "Ribeiro", "Martins", "Carvalho", "Rocha", "Dias",
+                "Nunes", "Araújo", "Barbosa", "Mendes", "Freitas");
+
+        List<String> userPhones = List.of("41987654321", "41991234567", "41993456789", "41999887766", "41990123456",
+                "41998765432", "41994561238", "41997654321", "41992345678", "41995432109");
+
+        List<User> users = new ArrayList<>();
+
+        for (int i = 0; i < 50; i++) {
+            User user = new User();
+            Boolean hasThreeNames = random.nextBoolean();
+
+            List<String> name = new ArrayList<>();
+            name.add(userNames.get(random.nextInt(userNames.size())));
+            name.add(userLastNames.get(random.nextInt(userLastNames.size())));
+
+            if (hasThreeNames)
+                name.add(userLastNames.get(random.nextInt(userLastNames.size())));
+
+            user.setName(String.join(" ", name));
+
+            String phone = userPhones.get(random.nextInt(userPhones.size()));
+            user.setPhone(phone);
+
+            users.add(user);
+        }
+
+        userRepository.saveAll(users);
     }
 }
