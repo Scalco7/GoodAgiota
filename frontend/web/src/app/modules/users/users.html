@@ -11,9 +11,9 @@
     </div>
 
     <div class="w-full flex justify-center inter">
-        <ga-user-table [users]="users" />
+        <ga-user-table [users]="users" (editUser)="openUserModalEdit($event)" />
     </div>
 </main>
 
-<ga-user-modal [(isVisible)]="showUserModal" [user]="selectedUser" (createUser)="handleOnCreateUser($event)"
+<ga-user-modal #userModal (createUser)="handleOnCreateUser($event)"
     (editUser)="handleOnEditUser($event)"></ga-user-modal>

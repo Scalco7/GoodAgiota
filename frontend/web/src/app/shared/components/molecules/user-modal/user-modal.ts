@@ -24,15 +24,12 @@ export interface UserData {
 export class UserModalComponent {
   public messageService = inject(MessageService);
 
-  @Input() isVisible!: boolean
-  @Output() isVisibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  @Input() user?: UserData;
-
   @Output() createUser: EventEmitter<ICreateUserRequest> = new EventEmitter<ICreateUserRequest>();
   @Output() editUser: EventEmitter<UserData> = new EventEmitter<UserData>();
 
+  public user?: UserData;
   public isLoading: boolean = false;
+  public _isVisible: boolean = false;
 
   public userForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -42,6 +39,15 @@ export class UserModalComponent {
   private resetForm() {
     this.userForm.reset();
     this.isLoading = false;
+  }
+
+  private loadEditData() {
+    this.userForm.get('name')?.setValue(this.user?.name ?? '')
+    this.userForm.get('phone')?.setValue(
+      this.user?.phone.replace(/\D/g, '').replace(/^(\d{2})(\d)/, '($1) $2').replace(/(\d{1})(\d{4})(\d{4})$/, '$1 $2-$3')
+      ?? ''
+    )
+    this.userForm.updateValueAndValidity()
   }
 
   private validateForm(): void {
@@ -60,6 +66,18 @@ export class UserModalComponent {
 
   private showFormError(message: string): void {
     this.messageService.add({ severity: 'error', summary: 'Erro de preenchimento', detail: message, life: 3000 })
+  }
+
+  public open(user?: UserData) {
+    this.user = user;
+    this.resetForm();
+    if (this.user) this.loadEditData();
+
+    this._isVisible = true;
+  }
+
+  public close() {
+    this._isVisible = false;
   }
 
   public handleSave() {
@@ -88,15 +106,6 @@ export class UserModalComponent {
   }
 
   public handleCancel() {
-    this.changeIsVisible(false);
-  }
-
-  public changeIsVisible(value: boolean) {
-    if (value == false) {
-      this.resetForm();
-    }
-
-    this.isVisible = value;
-    this.isVisibleChange.emit(this.isVisible)
+    this._isVisible = false
   }
 }

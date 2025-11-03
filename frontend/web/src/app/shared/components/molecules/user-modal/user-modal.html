@@ -1,5 +1,5 @@
 <p-dialog [header]="user? 'Editar Usuário' : 'Criar Usuário'" [modal]="true" [closeOnEscape]="true"
-    [(visible)]="isVisible" (visibleChange)="changeIsVisible($event)" [style]="{ width: '25rem' }">
+    [(visible)]="_isVisible" [style]="{ width: '25rem' }">
     <span class="p-text-secondary block mb-8">Coloque os dados do usuário</span>
     <form [formGroup]="userForm">
         <div class="flex items-center gap-4 mb-4">
@@ -8,7 +8,8 @@
         </div>
         <div class="flex items-center gap-4 mb-8">
             <label for="phone" class="font-semibold w-24">Telefone</label>
-            <p-inputmask mask="(99) 9 9999-9999" id="phone" class="flex-auto" autocomplete="off" formControlName="phone" />
+            <p-inputmask mask="(99) 9 9999-9999" id="phone" class="flex-auto" autocomplete="off"
+                formControlName="phone" />
         </div>
     </form>
     <div class="flex justify-end gap-2">

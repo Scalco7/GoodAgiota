@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { TagModule } from 'primeng/tag';
@@ -10,11 +10,12 @@ import { SelectModule } from 'primeng/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Formatter } from '../../../helpers/formatter';
 import { EUserStatus, IUserResponse } from '../../../../api/users/list-users/list-users.interface';
+import { Button } from "primeng/button";
 
 @Component({
   standalone: true,
   selector: 'ga-user-table',
-  imports: [CommonModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, FormsModule, ReactiveFormsModule, Button],
   templateUrl: './user-table.html',
   styleUrl: './user-table.scss',
 })
@@ -22,6 +23,7 @@ export class UserTableComponent {
   public formatPhone = Formatter.formatPhone
 
   @Input() users: IUserResponse[] = []
+  @Output() editUser: EventEmitter<IUserResponse> = new EventEmitter<IUserResponse>()
 
   statusSelectValue = null
 
@@ -40,5 +42,9 @@ export class UserTableComponent {
       case EUserStatus.PAYING:
         return 'warn'
     }
+  }
+
+  public handleEditUser(user: IUserResponse){
+    this.editUser.emit(user)
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { UserTableComponent } from "../../shared/components/molecules/user-table/user-table";
 import { Button } from "primeng/button";
 import { MessageService } from 'primeng/api';
@@ -22,10 +22,9 @@ export class UsersPage implements OnInit {
   private messageService = inject(MessageService);
   private requestsService = inject(RequestsHandlerService);
 
-  public users: IUserResponse[] = []
+  @ViewChild(UserModalComponent) userModal!: UserModalComponent;
 
-  public showUserModal: boolean = false;
-  public selectedUser?: IUserResponse;
+  public users: IUserResponse[] = []
 
   ngOnInit(): void {
     this.fetchUsers()
@@ -36,7 +35,7 @@ export class UsersPage implements OnInit {
       next: (result) => {
         this.messageService.add({ severity: 'success', summary: "Usuário adicionado", detail: `${user.name} foi adicionado a lista de usuários.`, life: 3000 });
         this.fetchUsers();
-        this.showUserModal = false;
+        this.userModal.close();
       },
       error: (error) => {
         console.log(error)
@@ -48,9 +47,14 @@ export class UsersPage implements OnInit {
   private updateUser(user: IUpdateUserRequest, userId: string) {
     this.requestsService.handle(new UpdateUserRequest(userId, user)).subscribe({
       next: (result) => {
-        this.messageService.add({ severity: 'success', summary: "Usuário atualizado", detail: `teste`, life: 3000 });
-        // this.fetchUsers();
-        this.showUserModal = false;
+        const newName = result.resultData.name
+        const newPhone = result.resultData.phone
+        const oldUser = this.users.find(u => u.id === userId)
+        oldUser!.name = newName
+        oldUser!.phone = newPhone
+
+        this.messageService.add({ severity: 'success', summary: "Usuário atualizado", detail: `Os dados de ${newName} foram atualizados.`, life: 3000 });
+        this.userModal.close();
       },
       error: (error) => {
         console.log(error)
@@ -72,13 +76,11 @@ export class UsersPage implements OnInit {
   }
 
   public openUserModalCreate() {
-    this.selectedUser = undefined;
-    this.showUserModal = true;
+    this.userModal.open();
   }
 
   public openUserModalEdit(user: IUserResponse) {
-    this.selectedUser = user;
-    this.showUserModal = true;
+    this.userModal.open(user);
   }
 
   public handleOnCreateUser(user: ICreateUserRequest) {
