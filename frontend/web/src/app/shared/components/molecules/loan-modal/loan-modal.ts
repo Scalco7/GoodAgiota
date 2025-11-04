@@ -11,6 +11,7 @@ import { IUserResponse } from '../../../../api/users/list-users/list-users.inter
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { ICoin } from '../../../../api/currency/list-coins/list-coins.interface';
 
 export interface LoanData {
   user: string
@@ -32,35 +33,19 @@ export class LoanModalComponent {
   public messageService = inject(MessageService);
 
   @Input() users: IUserResponse[] = []
+  @Input() coins: ICoin[] = []
 
   // @Output() createUser: EventEmitter<ICreateUserRequest> = new EventEmitter<ICreateUserRequest>();
-
-  public coinCodes: Record<string, string>[] = [
-    {
-      id: '1',
-      code: "USD"
-
-    },
-    {
-      id: '2',
-      code: "EUR"
-
-    },
-    {
-      id: '1',
-      code: "BRL"
-    }
-  ]
 
   public isLoading: boolean = false;
   public _isVisible: boolean = false;
 
   public loanForm = new FormGroup({
     selectedUser: new FormControl('', Validators.required),
-    coinCode: new FormControl(this.coinCodes[0], Validators.required),
+    coinCode: new FormControl(this.coins[0], Validators.required),
     loanValue: new FormControl('', [Validators.required, Validators.min(1000)]),
     loanRate: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
-    dueDate: new FormControl('', Validators.required),
+    loanDuration: new FormControl('', [Validators.required, Validators.min(1), Validators.max(240)]),
   });
 
   private resetForm() {
@@ -112,8 +97,8 @@ export class LoanModalComponent {
     // this.createUser.emit(userData)
   }
 
-  public getActualCurrency(coinCode: any): string {
-    return coinCode && coinCode.code && coinCode.code.length > 0 ? coinCode.code : 'BRL'
+  public getActualCurrency(coinCode: ICoin | null): string {
+    return coinCode && coinCode.simbolo && coinCode.simbolo.length > 0 ? coinCode.simbolo : 'BRL'
   }
 
   public handleCancel() {

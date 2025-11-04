@@ -8,6 +8,8 @@ import { RequestsHandlerService } from '../../shared/handlers/request/request-ha
 import { ILoanResponse } from '../../api/loans/list-loans/list-loans.interface';
 import { ListLoansRequest } from '../../api/loans/list-loans/list-loans.request';
 import { LoanModalComponent } from "../../shared/components/molecules/loan-modal/loan-modal";
+import { ListCoinsRequest } from '../../api/currency/list-coins/list-coins.request';
+import { ICoin } from '../../api/currency/list-coins/list-coins.interface';
 
 @Component({
   standalone: true,
@@ -24,10 +26,17 @@ export class LoansPage implements OnInit {
 
   public loans: ILoanResponse[] = []
   public users: IUserResponse[] = []
+  public coins: ICoin[] = [
+    {
+      simbolo: "BRL",
+      nomeFormatado: "Real Brasileiro"
+    }
+  ]
 
   ngOnInit(): void {
     this.fetchLoans()
     this.fetchUsers()
+    this.fetchCoins()
   }
 
   private fetchLoans() {
@@ -50,6 +59,18 @@ export class LoansPage implements OnInit {
       error: (error) => {
         console.log(error)
         this.messageService.add({ severity: 'error', summary: error.title, detail: error.message, life: 3000 });
+      },
+    });
+  }
+
+  private fetchCoins() {
+    this.requestsService.handleExternal(new ListCoinsRequest()).subscribe({
+      next: (result) => {
+        this.coins.push(...result.value);
+      },
+      error: (error) => {
+        console.log(error)
+        this.messageService.add({ severity: 'error', summary: "Erro ao buscar moedas", detail: error.message, life: 3000 });
       },
     });
   }

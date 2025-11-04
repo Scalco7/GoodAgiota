@@ -22,16 +22,16 @@
             </div>
             <div class="input-container">
                 <label for="coin-code-select" class="font-semibold w-full">Moeda</label>
-                <p-select [options]="coinCodes" inputId="coin-code-select" formControlName="coinCode" optionLabel="code"
-                    [filter]="true" filterBy="code" [showClear]="true" placeholder="Selecione uma moeda" class="w-full">
+                <p-select [options]="coins" inputId="coin-code-select" formControlName="coinCode" optionLabel="simbolo"
+                    [filter]="true" filterBy="simbolo" [showClear]="true" placeholder="Selecione uma moeda" class="w-full">
                     <ng-template #selectedItem let-selectedOption>
                         <div class="flex items-center gap-2">
-                            <div>{{ selectedOption.code }}</div>
+                            <div>{{ selectedOption.nomeFormatado }}</div>
                         </div>
                     </ng-template>
                     <ng-template let-coin #item>
                         <div class="flex items-center gap-2">
-                            <div>{{ coin.code }}</div>
+                            <div>{{ coin.simbolo }}</div>
                         </div>
                     </ng-template>
                 </p-select>
@@ -41,19 +41,21 @@
             <div class="input-container">
                 <label for="loanValue" class="font-semibold w-full">Valor do empréstimo</label>
                 <p-inputnumber inputId="loanValue" placeholder="1000" class="flex-auto w-full"
-                    formControlName="loanValue" mode="currency" [currency]="getActualCurrency(loanForm.value.coinCode)" />
+                    formControlName="loanValue" mode="currency" [currency]="getActualCurrency(loanForm.value.coinCode ?? null)" />
             </div>
             <div class="input-container">
-                <label for="dueDate" class="font-semibold w-full">Data de pagamento</label>
-                <input pInputText id="dueDate" class="flex-auto w-full" type="date" autocomplete="off"
-                    formControlName="dueDate" />
+                <label for="loan-duration" class="font-semibold w-full">Duração do empréstimo</label>
+                <p-inputgroup>
+                    <p-inputnumber inputId="loan-duration" mode="decimal" placeholder="24" formControlName="loanDuration" [maxFractionDigits]="0" />
+                    <p-inputgroup-addon>Meses</p-inputgroup-addon>
+                </p-inputgroup>
             </div>
         </div>
         <div class="flex gap-5 mb-10 md:w-90">
             <div class="input-container">
-                <label for="loan-rate" class="font-semibold w-full">Porcentagem de juros</label>
+                <label for="loan-rate" class="font-semibold w-full">Juros mensal</label>
                 <p-inputgroup>
-                    <p-inputnumber inputId="loan-rate" placeholder="20" formControlName="loanRate" />
+                    <p-inputnumber inputId="loan-rate" mode="decimal" placeholder="20" formControlName="loanRate" [minFractionDigits]="0" [maxFractionDigits]="2" />
                     <p-inputgroup-addon>%</p-inputgroup-addon>
                 </p-inputgroup>
             </div>
