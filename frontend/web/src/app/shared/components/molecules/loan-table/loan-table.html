@@ -40,7 +40,10 @@
                     }"></i>
             </td>
             <td>
-                <p-button (onClick)="handleOnPayLoan(loan); $event.stopPropagation()" icon="pi pi-money-bill"></p-button>
+                <button class="p-ripple p-button p-component w-9 h-9" (click)="handleOnPayLoan(loan); $event.stopPropagation()"
+                    type="button" [disabled]="loan.paid">
+                    <i class="pi pi-money-bill"></i>
+                </button>
             </td>
         </tr>
     </ng-template>

@@ -9,7 +9,6 @@ import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { Formatter } from '../../../helpers/formatter';
-import { ButtonModule } from 'primeng/button';
 
 export interface ILoanTableRow {
   id: string
@@ -26,7 +25,7 @@ export interface ILoanTableRow {
 @Component({
   standalone: true,
   selector: 'ga-loan-table',
-  imports: [CommonModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, FormsModule, ReactiveFormsModule, ButtonModule],
+  imports: [CommonModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, FormsModule, ReactiveFormsModule],
   templateUrl: './loan-table.html',
   styleUrl: './loan-table.scss',
 })
