@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.goodagiota.dtos.ApiResponse;
 import com.example.goodagiota.dtos.loan.LoanDataRequest;
+import com.example.goodagiota.dtos.loan.LoanResponse;
 import com.example.goodagiota.entities.Loan;
 import com.example.goodagiota.services.LoanService;
 
@@ -28,9 +29,9 @@ public class LoanResource {
 
     @Operation(summary = "Lista todos os empréstimos")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Loan>>> findAll() {
-        List<Loan> list = service.findAll();
-        ApiResponse<List<Loan>> response = new ApiResponse<>(list);
+    public ResponseEntity<ApiResponse<List<LoanResponse>>> findAll() {
+        List<LoanResponse> list = service.findAll();
+        ApiResponse<List<LoanResponse>> response = new ApiResponse<>(list);
         return ResponseEntity.ok().body(response);
     }
 

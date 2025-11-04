@@ -45,6 +45,23 @@ public class Loan implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public Loan(){}
+
+    public Loan(Loan loan){
+        this.id = loan.getId();
+        this.loanValue = loan.getLoanValue();
+        this.loanDate = loan.getLoanDate();
+        this.dueDate = loan.getDueDate();
+        this.paid = loan.getPaid();
+        this.paidDate = loan.getPaidDate();
+        this.coinCode = loan.getCoinCode();
+        this.currencyConversionRate = loan.getCurrencyConversionRate();
+        this.loanRate = loan.getLoanRate();
+        this.user = loan.getUser();
+        this.createdDate = loan.getCreatedDate();
+        this.updatedDate = loan.getUpdatedDate();
+    }
+
     public String getId() {
         return id;
     }

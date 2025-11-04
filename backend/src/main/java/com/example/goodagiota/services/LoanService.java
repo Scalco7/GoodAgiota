@@ -1,7 +1,9 @@
 package com.example.goodagiota.services;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,12 +14,14 @@ import org.springframework.stereotype.Service;
 
 import com.example.goodagiota.clients.CurrencyClient;
 import com.example.goodagiota.dtos.loan.LoanDataRequest;
+import com.example.goodagiota.dtos.loan.LoanResponse;
 import com.example.goodagiota.entities.Loan;
 import com.example.goodagiota.entities.User;
 import com.example.goodagiota.exceptions.IncompleteRequestException;
 import com.example.goodagiota.exceptions.InvalidRequestException;
 import com.example.goodagiota.repositories.LoanRepository;
 import com.example.goodagiota.repositories.UserRepository;
+import com.example.goodagiota.utils.FeesUtils;
 
 import jakarta.transaction.Transactional;
 
@@ -33,8 +37,26 @@ public class LoanService {
     @Autowired
     private CurrencyClient currencyClient;
 
-    public List<Loan> findAll() {
-        return loanRepository.findAll();
+    public List<LoanResponse> findAll() {
+        return loanRepository.findAll().stream()
+                .map(loan -> {
+                    LocalDate loanDate = loan.getLoanDate().toInstant()
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate();
+
+                    LocalDate dueDate = loan.getDueDate().toInstant()
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate();
+                    long monthsBetween = ChronoUnit.MONTHS.between(loanDate, dueDate);
+                    Double finalLoanAmount = FeesUtils.calcCompoundFee(
+                            loan.getLoanValue().doubleValue(),
+                            loan.getLoanRate(),
+                            monthsBetween);
+
+                    LoanResponse response = new LoanResponse(loan, finalLoanAmount);
+                    return response;
+                })
+                .toList();
     }
 
     public Loan create(LoanDataRequest loanRequest) {
@@ -125,7 +147,7 @@ public class LoanService {
 
             loan.setPaid(false);
             loan.setCurrencyConversionRate(random.nextDouble(5));
-            loan.setLoanRate(random.nextDouble(5, 20));
+            loan.setLoanRate(random.nextDouble(1, 5));
 
             User user = users.get(random.nextInt(users.size()));
             loan.setUser(user);
