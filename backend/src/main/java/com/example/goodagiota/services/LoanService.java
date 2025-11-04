@@ -10,6 +10,7 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.goodagiota.clients.CurrencyClient;
 import com.example.goodagiota.dtos.loan.LoanDataRequest;
 import com.example.goodagiota.entities.Loan;
 import com.example.goodagiota.entities.User;
@@ -29,6 +30,9 @@ public class LoanService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CurrencyClient currencyClient;
+
     public List<Loan> findAll() {
         return loanRepository.findAll();
     }
@@ -40,36 +44,42 @@ public class LoanService {
         if (loanRequest.getCoinCode() == null || loanRequest.getCoinCode().isEmpty()) {
             throw new IncompleteRequestException("Código da moeda não deve ser nulo.");
         }
-        if (loanRequest.getCurrencyConversionRate() == null) {
-            throw new IncompleteRequestException("Taxa de conversão não deve ser nulo.");
-        }
         if (loanRequest.getLoanRate() == null) {
             throw new IncompleteRequestException("Taxa de empréstimo não deve ser nulo.");
         }
         if (loanRequest.getLoanRate() <= 0) {
             throw new InvalidRequestException("Taxa de empréstimo deve ser maior que zero.");
         }
-        if (loanRequest.getDueDate() == null) {
-            throw new IncompleteRequestException("Data de vencimento não deve ser nula.");
+        if (loanRequest.getLoanDurationInMonths() == null) {
+            throw new IncompleteRequestException("Duração do empréstimo não deve ser nula.");
         }
-        if (loanRequest.getDueDate().before(new Date())) {
-            throw new InvalidRequestException("Data de vencimento deve ser maior que a data atual.");
+        if (loanRequest.getLoanDurationInMonths() < 1) {
+            throw new InvalidRequestException("Duração do empréstimo deve ser de pelo menos 1 mês.");
+        }
+        if (loanRequest.getLoanDurationInMonths() > 240) {
+            throw new InvalidRequestException("Duração do empréstimo não deve passar de 240 meses.");
         }
         if (loanRequest.getLoanValue() == null) {
             throw new IncompleteRequestException("Valor do empréstimo não deve ser nulo.");
         }
-        if (loanRequest.getLoanValue() <= 0) {
-            throw new InvalidRequestException("Valor do empréstimo deve ser maior que zero.");
+        if (loanRequest.getLoanValue() < 1000) {
+            throw new InvalidRequestException("Valor do empréstimo deve ser maior que mil.");
         }
 
         User user = userRepository.findById(loanRequest.getUserId()).orElseThrow(() -> new InvalidRequestException(
                 "Id do usuário informado inexistente."));
 
+        LocalDateTime dueDate = LocalDateTime.now().plusMonths(loanRequest.getLoanDurationInMonths());
         Loan newLoan = new Loan();
+
+        Double currencyConversionRate = currencyClient.getCurrencyConversion(loanRequest.getCoinCode()).get(0)
+                .getCotacaoVenda();
+
+        newLoan.setCurrencyConversionRate(currencyConversionRate);
+
         newLoan.setLoanValue(loanRequest.getLoanValue());
-        newLoan.setDueDate(loanRequest.getDueDate());
+        newLoan.setDueDate(Date.from(dueDate.atZone(ZoneId.systemDefault()).toInstant()));
         newLoan.setCoinCode(loanRequest.getCoinCode());
-        newLoan.setCurrencyConversionRate(loanRequest.getCurrencyConversionRate());
         newLoan.setLoanRate(loanRequest.getLoanRate());
         newLoan.setUser(user);
 
