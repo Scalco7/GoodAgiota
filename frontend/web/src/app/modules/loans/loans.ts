@@ -122,7 +122,7 @@ export class LoansPage implements OnInit {
 
   private confirmPaymentDialog(loan: ILoanTableRow) {
     this.confirmationService.confirm({
-      message: `Você confirma que o(a) ${loan.userName} pagou o empréstimo de ${Formatter.formatCurrency(loan.toPayValue, loan.currency)}?`,
+      message: `Você confirma que o(a) ${loan.userName} pagou</br>o empréstimo de ${Formatter.formatCurrency(loan.toPayValue, loan.currency)}?`,
       header: 'Confirmar Pagamento',
       closable: true,
       closeOnEscape: true,
