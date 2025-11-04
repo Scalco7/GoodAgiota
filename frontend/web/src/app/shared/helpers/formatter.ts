@@ -32,4 +32,8 @@ export class Formatter {
             minimumFractionDigits: 2
         });
     }
+
+    public static formatPercentage(value: number, decimals: number = 2): string {
+        return `${(value).toFixed(decimals)}%`;
+    }
 }

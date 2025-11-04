@@ -11,7 +11,7 @@
     </div>
 
     <div class="w-full flex justify-center inter">
-        <ga-loan-table [loans]="getLoansDataForTable()" />
+        <ga-loan-table [loans]="getLoansDataForTable()" (payLoan)="handleOnPayLoan($event)" />
     </div>
 </main>
 

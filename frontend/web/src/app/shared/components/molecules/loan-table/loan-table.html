@@ -1,6 +1,6 @@
 <p-table #dt1 dataKey="id" [value]="loans" [paginator]="true" [rows]="7"
     [globalFilterFields]="['loanDate', 'paymentDate', 'value', 'userName', 'currency']"
-    [tableStyle]="{ 'min-width': '70rem'}" class="inter">
+    [tableStyle]="{ 'min-width': '70rem'}" class="inter" tab>
     <ng-template #header>
         <tr>
             <th>#</th>
@@ -8,6 +8,7 @@
             <th>Meses</th>
             <th>Usuário</th>
             <th>Valor Emprestado</th>
+            <th>Taxa</th>
             <th>Valor Final</th>
             <th>Pago</th>
             <th></th>
@@ -27,6 +28,9 @@
                 {{ formatCurrency(loan.loanValue, loan.currency) }}
             </td>
             <td>
+                {{ formatPercentage(loan.loanRate) }}
+            </td>
+            <td>
                 {{ formatCurrency(loan.toPayValue, loan.currency) }}
             </td>
             <td>
@@ -36,7 +40,7 @@
                     }"></i>
             </td>
             <td>
-                <p-button (onClick)="showLoanData(loan)" icon="pi pi-eye" [outlined]="true"></p-button>
+                <p-button (onClick)="handleOnPayLoan(loan); $event.stopPropagation()" icon="pi pi-money-bill"></p-button>
             </td>
         </tr>
     </ng-template>

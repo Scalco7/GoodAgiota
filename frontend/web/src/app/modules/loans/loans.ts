@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ButtonModule } from "primeng/button";
 import { ILoanTableRow, LoanTableComponent } from "../../shared/components/molecules/loan-table/loan-table";
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { IUserResponse } from '../../api/users/list-users/list-users.interface';
 import { ListUsersRequest } from '../../api/users/list-users/list-users.request';
 import { RequestsHandlerService } from '../../shared/handlers/request/request-handler.service';
@@ -14,6 +14,7 @@ import { ICreateLoanRequest } from '../../api/loans/create-loan/create-loan.inte
 import { CreateLoanRequest } from '../../api/loans/create-loan/create-loan.request';
 import { Formatter } from '../../shared/helpers/formatter';
 import { differenceInMonths } from 'date-fns';
+import { PayLoanRequest } from '../../api/loans/pay-loan/pay-loan.request';
 
 @Component({
   standalone: true,
@@ -23,6 +24,7 @@ import { differenceInMonths } from 'date-fns';
   styleUrl: './loans.scss',
 })
 export class LoansPage implements OnInit {
+  private confirmationService = inject(ConfirmationService);
   private messageService = inject(MessageService);
   private requestsService = inject(RequestsHandlerService);
 
@@ -54,6 +56,26 @@ export class LoansPage implements OnInit {
         });
         this.fetchLoans();
         this.loanModal.close();
+      },
+      error: (error) => {
+        console.log(error)
+        this.messageService.add({ severity: 'error', summary: error.title, detail: error.message, life: 3000 });
+      },
+    });
+  }
+
+  private payLoan(loanId: string) {
+    this.requestsService.handle(new PayLoanRequest(loanId)).subscribe({
+      next: (result) => {
+        const oldLoan = this.loans.find(l => l.id === loanId)
+        oldLoan!.paid = true
+
+        this.messageService.add({
+          severity: 'success',
+          summary: "Empréstimo pago",
+          detail: `Empréstimo do(a) ${oldLoan!.user.name} pago com sucesso.`,
+          life: 3000
+        });
       },
       error: (error) => {
         console.log(error)
@@ -98,6 +120,28 @@ export class LoansPage implements OnInit {
     });
   }
 
+  private confirmPaymentDialog(loan: ILoanTableRow) {
+    this.confirmationService.confirm({
+      message: `Você confirma que o(a) ${loan.userName} pagou o empréstimo de ${Formatter.formatCurrency(loan.toPayValue, loan.currency)}?`,
+      header: 'Confirmar Pagamento',
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Confirmar',
+      },
+      accept: () => {
+        this.payLoan(loan.id)
+      },
+      reject: () => { },
+    });
+  }
+
   public getLoansDataForTable(): ILoanTableRow[] {
     return this.loans.map(loan => {
       return {
@@ -109,6 +153,7 @@ export class LoansPage implements OnInit {
         toPayValue: loan.finalLoanAmount,
         paid: loan.paid,
         currency: loan.coinCode,
+        loanRate: loan.loanRate
       }
     })
   }
@@ -119,5 +164,9 @@ export class LoansPage implements OnInit {
 
   public handleOnCreateLoan(loan: ICreateLoanRequest) {
     this.createLoan(loan);
+  }
+
+  public handleOnPayLoan(loan: ILoanTableRow) {
+    this.confirmPaymentDialog(loan);
   }
 }
