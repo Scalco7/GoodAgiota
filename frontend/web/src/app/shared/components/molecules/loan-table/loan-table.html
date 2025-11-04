@@ -1,4 +1,4 @@
-<p-table #dt1 dataKey="id" [value]="loans" [paginator]="true" [rows]="8"
+<p-table #dt1 dataKey="id" [value]="loans" [paginator]="true" [rows]="7"
     [globalFilterFields]="['loanDate', 'paymentDate', 'value', 'userName', 'currency']"
     [tableStyle]="{ 'min-width': '70rem'}" class="inter">
     <ng-template #header>
@@ -9,32 +9,8 @@
             <th>Usuário</th>
             <th>Valor</th>
             <th>Moeda</th>
+            <th></th>
         </tr>
-        <!-- <tr>
-            <th>
-            </th>
-            <th>
-                <p-columnFilter type="text" field="name" placeholder="Digite para procurar" ariaLabel="Filtrar nome"
-                    filterOn="input">
-                </p-columnFilter>
-            </th>
-            <th>
-                <p-columnFilter type="text" field="phone" placeholder="Digite para procurar"
-                    ariaLabel="Filtrar Telefone"></p-columnFilter>
-            </th>
-            <th>
-                <p-columnFilter field="status" matchMode="equals" [showMenu]="false">
-                    <ng-template #filter let-filter="filterCallback">
-                        <p-select [options]="statuses" (onChange)="filter($event.value)" placeholder="Selecione"
-                            [showClear]="true" style="min-width: 12rem">
-                            <ng-template let-option #item>
-                                <p-tag [value]="option.value" [severity]="getTagSeverity(option.value)" />
-                            </ng-template>
-                        </p-select>
-                    </ng-template>
-                </p-columnFilter>
-            </th>
-        </tr> -->
     </ng-template>
     <ng-template #body let-loan>
         <tr>
@@ -51,6 +27,9 @@
             </td>
             <td>
                 {{ loan.currency }}
+            </td>
+            <td>
+                <p-button (onClick)="showLoanData(loan)" icon="pi pi-eye" [outlined]="true"></p-button>
             </td>
         </tr>
     </ng-template>

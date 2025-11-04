@@ -9,6 +9,7 @@ import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { Formatter } from '../../../helpers/formatter';
+import { Button } from 'primeng/button';
 
 export interface ILoanTableRow {
   id: string
@@ -22,7 +23,7 @@ export interface ILoanTableRow {
 @Component({
   standalone: true,
   selector: 'ga-loan-table',
-  imports: [CommonModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, FormsModule, ReactiveFormsModule, Button],
   templateUrl: './loan-table.html',
   styleUrl: './loan-table.scss',
 })
@@ -31,4 +32,8 @@ export class LoanTableComponent {
   public formatCurrency = Formatter.formatCurrency
 
   @Input() loans: ILoanTableRow[] = []
+
+  public showLoanData(loan: ILoanTableRow){
+    
+  }
 }

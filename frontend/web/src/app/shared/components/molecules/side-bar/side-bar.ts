@@ -20,11 +20,11 @@ export class SideBarComponent implements OnInit {
   private router = inject(Router);
 
   public routes: IRoute[] = [
-    {
-      name: 'Dashboard',
-      path: '/',
-      icon: 'pi-chart-pie'
-    },
+    // {
+    //   name: 'Dashboard',
+    //   path: '/',
+    //   icon: 'pi-chart-pie'
+    // },
     {
       name: 'Empréstimos',
       path: '/loans',
