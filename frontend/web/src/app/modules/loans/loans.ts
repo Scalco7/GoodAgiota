@@ -13,6 +13,7 @@ import { ICoin } from '../../api/currency/list-coins/list-coins.interface';
 import { ICreateLoanRequest } from '../../api/loans/create-loan/create-loan.interface';
 import { CreateLoanRequest } from '../../api/loans/create-loan/create-loan.request';
 import { Formatter } from '../../shared/helpers/formatter';
+import { differenceInMonths } from 'date-fns';
 
 @Component({
   standalone: true,
@@ -101,11 +102,13 @@ export class LoansPage implements OnInit {
     return this.loans.map(loan => {
       return {
         id: loan.id,
-        loanDate: loan.loanDate,
-        paymentDate: loan.dueDate,
-        value: loan.loanValue,
         userName: loan.user.name,
-        currency: loan.coinCode
+        loanDate: loan.loanDate,
+        loanDurationInMonths: differenceInMonths(loan.dueDate, loan.loanDate),
+        loanValue: loan.loanValue,
+        toPayValue: loan.finalLoanAmount,
+        paid: loan.paid,
+        currency: loan.coinCode,
       }
     })
   }
@@ -114,7 +117,7 @@ export class LoansPage implements OnInit {
     this.loanModal.open();
   }
 
-    public handleOnCreateLoan(loan: ICreateLoanRequest) {
-      this.createLoan(loan);
-    }
+  public handleOnCreateLoan(loan: ICreateLoanRequest) {
+    this.createLoan(loan);
+  }
 }

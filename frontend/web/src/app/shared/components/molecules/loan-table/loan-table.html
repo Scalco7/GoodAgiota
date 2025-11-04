@@ -5,10 +5,11 @@
         <tr>
             <th>#</th>
             <th>Data do Empréstimo</th>
-            <th>Data do Pagamento</th>
+            <th>Meses</th>
             <th>Usuário</th>
-            <th>Valor</th>
-            <th>Moeda</th>
+            <th>Valor Emprestado</th>
+            <th>Valor Final</th>
+            <th>Pago</th>
             <th></th>
         </tr>
     </ng-template>
@@ -18,22 +19,28 @@
                 {{loans.indexOf(loan) + 1}}
             </td>
             <td>{{ formatDate(loan.loanDate )}}</td>
-            <td>{{ formatDate(loan.paymentDate) }}</td>
+            <td>{{ loan.loanDurationInMonths }}</td>
             <td>
                 {{ loan.userName }}
             </td>
             <td>
-                {{ formatCurrency(loan.value, loan.currency) }}
+                {{ formatCurrency(loan.loanValue, loan.currency) }}
             </td>
             <td>
-                {{ loan.currency }}
+                {{ formatCurrency(loan.toPayValue, loan.currency) }}
+            </td>
+            <td>
+                <i class="pi" [ngClass]="{
+                        'text-green-500 pi-check-circle': loan.paid,
+                        'text-red-500 pi-times-circle': !loan.paid
+                    }"></i>
             </td>
             <td>
                 <p-button (onClick)="showLoanData(loan)" icon="pi pi-eye" [outlined]="true"></p-button>
             </td>
         </tr>
     </ng-template>
-        <ng-template #emptymessage>
+    <ng-template #emptymessage>
         <tr>
             <td colspan="6">Nenhum empréstimo cadastrado.</td>
         </tr>

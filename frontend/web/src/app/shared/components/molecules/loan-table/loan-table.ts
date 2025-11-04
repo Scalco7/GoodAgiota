@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -13,10 +13,12 @@ import { Button } from 'primeng/button';
 
 export interface ILoanTableRow {
   id: string
-  loanDate: Date
-  paymentDate: Date
-  value: number
   userName: string
+  loanDate: Date
+  loanDurationInMonths: number
+  loanValue: number
+  toPayValue: number
+  paid: boolean
   currency: string
 }
 
