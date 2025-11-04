@@ -1,0 +1,122 @@
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { Dialog } from 'primeng/dialog';
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InputMaskModule } from 'primeng/inputmask';
+import { MessageService } from 'primeng/api';
+import { getFormErrorMessage } from '../../../helpers/get-form-error-message';
+import { SelectModule } from 'primeng/select';
+import { IUserResponse } from '../../../../api/users/list-users/list-users.interface';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+
+export interface LoanData {
+  user: string
+  loanValue: number
+  dueDate: Date
+  coinCode: string
+  currencyConversionRate: number
+  loanRate: number
+}
+
+@Component({
+  standalone: true,
+  selector: 'ga-loan-modal',
+  imports: [Dialog, ButtonModule, InputTextModule, FormsModule, ReactiveFormsModule, InputMaskModule, SelectModule, InputGroupModule, InputGroupAddonModule, InputNumberModule],
+  templateUrl: './loan-modal.html',
+  styleUrl: './loan-modal.scss',
+})
+export class LoanModalComponent {
+  public messageService = inject(MessageService);
+
+  @Input() users: IUserResponse[] = []
+
+  // @Output() createUser: EventEmitter<ICreateUserRequest> = new EventEmitter<ICreateUserRequest>();
+
+  public coinCodes: Record<string, string>[] = [
+    {
+      id: '1',
+      code: "USD"
+
+    },
+    {
+      id: '2',
+      code: "EUR"
+
+    },
+    {
+      id: '1',
+      code: "BRL"
+    }
+  ]
+
+  public isLoading: boolean = false;
+  public _isVisible: boolean = false;
+
+  public loanForm = new FormGroup({
+    selectedUser: new FormControl('', Validators.required),
+    coinCode: new FormControl(this.coinCodes[0], Validators.required),
+    loanValue: new FormControl('', [Validators.required, Validators.min(1000)]),
+    loanRate: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    dueDate: new FormControl('', Validators.required),
+  });
+
+  private resetForm() {
+    this.loanForm.reset();
+    this.isLoading = false;
+  }
+
+  private validateForm(): void {
+    Object.values(this.loanForm.controls).forEach((control) => {
+      control.markAsDirty();
+      control.updateValueAndValidity();
+
+      if (control.invalid) {
+        const errorMessage = getFormErrorMessage(control);
+        if (errorMessage) {
+          this.showFormError(errorMessage);
+        }
+      }
+    });
+  }
+
+  private showFormError(message: string): void {
+    this.messageService.add({ severity: 'error', summary: 'Erro de preenchimento', detail: message, life: 3000 })
+  }
+
+  public open() {
+    this.resetForm();
+    this._isVisible = true;
+  }
+
+  public close() {
+    this._isVisible = false;
+  }
+
+  public handleSave() {
+    console.log(this.loanForm)
+
+    this.isLoading = true;
+    this.validateForm();
+    if (!this.loanForm.valid) {
+      this.isLoading = false;
+      return
+    }
+
+    // const userData: ICreateUserRequest = {
+    //   name: this.loanForm.value.name!,
+    //   phone: this.loanForm.value.phone!.replace(/\D/g, '')
+    // }
+    // this.createUser.emit(userData)
+  }
+
+  public getActualCurrency(coinCode: any): string {
+    return coinCode && coinCode.code && coinCode.code.length > 0 ? coinCode.code : 'BRL'
+  }
+
+  public handleCancel() {
+    this._isVisible = false
+  }
+}

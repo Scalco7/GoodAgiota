@@ -1,6 +1,6 @@
 import { FormControl } from "@angular/forms";
 
-export function getFormErrorMessage(control: FormControl<string | null>): string | null {
+export function getFormErrorMessage(control: FormControl<any | null>): string | null {
     console.log(control)
     if (!control || !control.errors) return null;
 

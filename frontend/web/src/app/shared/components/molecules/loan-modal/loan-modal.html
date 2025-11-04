@@ -1,0 +1,66 @@
+<p-dialog class="inter" header="Fazer um Empréstimo" [modal]="true" [closeOnEscape]="true" [(visible)]="_isVisible"
+    [style]="{ width: '50rem' }">
+    <span class="p-text-secondary block mb-8">Coloque os dados do empréstimo</span>
+    <form class="flex flex-col w-full gap-5" [formGroup]="loanForm">
+        <div class="flex gap-5 w-full">
+            <div class="input-container">
+                <label for="select-user" class="font-semibold w-full">Para quem você vai emprestar</label>
+                <p-select [options]="users" inputId="select-user" formControlName="selectedUser" optionLabel="name"
+                    [filter]="true" filterBy="name" [showClear]="true" placeholder="Selecione um usuário"
+                    class="w-full">
+                    <ng-template #selectedItem let-selectedOption>
+                        <div class="flex items-center gap-2">
+                            <div>{{ selectedOption.name }}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-user #item>
+                        <div class="flex items-center gap-2">
+                            <div>{{ user.name }}</div>
+                        </div>
+                    </ng-template>
+                </p-select>
+            </div>
+            <div class="input-container">
+                <label for="coin-code-select" class="font-semibold w-full">Moeda</label>
+                <p-select [options]="coinCodes" inputId="coin-code-select" formControlName="coinCode" optionLabel="code"
+                    [filter]="true" filterBy="code" [showClear]="true" placeholder="Selecione uma moeda" class="w-full">
+                    <ng-template #selectedItem let-selectedOption>
+                        <div class="flex items-center gap-2">
+                            <div>{{ selectedOption.code }}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-coin #item>
+                        <div class="flex items-center gap-2">
+                            <div>{{ coin.code }}</div>
+                        </div>
+                    </ng-template>
+                </p-select>
+            </div>
+        </div>
+        <div class="flex gap-5">
+            <div class="input-container">
+                <label for="loanValue" class="font-semibold w-full">Valor do empréstimo</label>
+                <p-inputnumber inputId="loanValue" placeholder="1000" class="flex-auto w-full"
+                    formControlName="loanValue" mode="currency" [currency]="getActualCurrency(loanForm.value.coinCode)" />
+            </div>
+            <div class="input-container">
+                <label for="dueDate" class="font-semibold w-full">Data de pagamento</label>
+                <input pInputText id="dueDate" class="flex-auto w-full" type="date" autocomplete="off"
+                    formControlName="dueDate" />
+            </div>
+        </div>
+        <div class="flex gap-5 mb-10 md:w-90">
+            <div class="input-container">
+                <label for="loan-rate" class="font-semibold w-full">Porcentagem de juros</label>
+                <p-inputgroup>
+                    <p-inputnumber inputId="loan-rate" placeholder="20" formControlName="loanRate" />
+                    <p-inputgroup-addon>%</p-inputgroup-addon>
+                </p-inputgroup>
+            </div>
+        </div>
+    </form>
+    <div class="flex justify-end gap-2">
+        <p-button label="Cancelar" severity="secondary" (click)="handleCancel()" />
+        <p-button label="Emprestar" (click)="handleSave()" [loading]="" />
+    </div>
+</p-dialog>

@@ -6,7 +6,7 @@ export class Formatter {
         return `${day}/${month}/${year}`;
     }
 
-    public static formatPhone(phone: string): string {
+    public static formatPhone(phone: string): string | null {
         phone = phone.replace(/\D/g, '');
 
         if (phone.startsWith('55')) {
@@ -14,7 +14,7 @@ export class Formatter {
         }
 
         if (phone.length !== 11) {
-            throw new Error('Número de telefone inválido');
+            return null
         }
 
         const ddd = phone.substring(0, 2);

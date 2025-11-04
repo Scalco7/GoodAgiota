@@ -1,0 +1,7 @@
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: calc(var(--spacing) * 1);
+    width: 100%;
+}

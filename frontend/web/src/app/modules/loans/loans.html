@@ -4,7 +4,7 @@
             <i class="pi pi-wallet" style="font-size: 2.5rem; display: flex; align-items: center;"></i>
             <h1 class="font-medium text-4xl poppins">Empréstimos</h1>
         </div>
-        <p-button>
+        <p-button (onClick)="openLoanModalCreate()">
             <i class="pi pi-plus-circle" style="font-size: 1rem; display: flex; align-items: center;"></i>
             Novo Empréstimo
         </p-button>
@@ -14,3 +14,5 @@
         <ga-loan-table [loans]="getLoansDataForTable()" />
     </div>
 </main>
+
+<ga-loan-modal #loanModal [users]="users"></ga-loan-modal>

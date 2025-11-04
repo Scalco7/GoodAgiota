@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ButtonModule } from "primeng/button";
 import { ILoanTableRow, LoanTableComponent } from "../../shared/components/molecules/loan-table/loan-table";
 import { MessageService } from 'primeng/api';
@@ -7,11 +7,12 @@ import { ListUsersRequest } from '../../api/users/list-users/list-users.request'
 import { RequestsHandlerService } from '../../shared/handlers/request/request-handler.service';
 import { ILoanResponse } from '../../api/loans/list-loans/list-loans.interface';
 import { ListLoansRequest } from '../../api/loans/list-loans/list-loans.request';
+import { LoanModalComponent } from "../../shared/components/molecules/loan-modal/loan-modal";
 
 @Component({
   standalone: true,
   selector: 'ga-loans',
-  imports: [ButtonModule, LoanTableComponent],
+  imports: [ButtonModule, LoanTableComponent, LoanModalComponent],
   templateUrl: './loans.html',
   styleUrl: './loans.scss',
 })
@@ -19,17 +20,32 @@ export class LoansPage implements OnInit {
   private messageService = inject(MessageService);
   private requestsService = inject(RequestsHandlerService);
 
+  @ViewChild(LoanModalComponent) loanModal!: LoanModalComponent;
+
   public loans: ILoanResponse[] = []
+  public users: IUserResponse[] = []
 
   ngOnInit(): void {
     this.fetchLoans()
+    this.fetchUsers()
   }
 
   private fetchLoans() {
     this.requestsService.handle(new ListLoansRequest()).subscribe({
       next: (result) => {
         this.loans = result.resultData;
-        console.log(this.loans)
+      },
+      error: (error) => {
+        console.log(error)
+        this.messageService.add({ severity: 'error', summary: error.title, detail: error.message, life: 3000 });
+      },
+    });
+  }
+
+  private fetchUsers() {
+    this.requestsService.handle(new ListUsersRequest()).subscribe({
+      next: (result) => {
+        this.users = result.resultData;
       },
       error: (error) => {
         console.log(error)
@@ -49,5 +65,9 @@ export class LoansPage implements OnInit {
         currency: loan.coinCode
       }
     })
+  }
+
+  public openLoanModalCreate() {
+    this.loanModal.open();
   }
 }
