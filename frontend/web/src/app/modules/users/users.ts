@@ -7,7 +7,7 @@ import { ListUsersRequest } from '../../api/users/list-users/list-users.request'
 import { IUserResponse } from '../../api/users/list-users/list-users.interface';
 import { UserData, UserModalComponent } from "../../shared/components/molecules/user-modal/user-modal";
 import { ICreateUserRequest } from '../../api/users/create-user/create-user.interface';
-import { CrateUserRequest } from '../../api/users/create-user/create-user.request';
+import { CreateUserRequest } from '../../api/users/create-user/create-user.request';
 import { IUpdateUserRequest } from '../../api/users/update-user/update-user.interface';
 import { UpdateUserRequest } from '../../api/users/update-user/update-user.request';
 import { DeleteUserRequest } from '../../api/users/delete-user/delete-user.request';
@@ -33,7 +33,7 @@ export class UsersPage implements OnInit {
   }
 
   private createUser(user: ICreateUserRequest) {
-    this.requestsService.handle(new CrateUserRequest(user)).subscribe({
+    this.requestsService.handle(new CreateUserRequest(user)).subscribe({
       next: (result) => {
         this.messageService.add({ severity: 'success', summary: "Usuário adicionado", detail: `${user.name} foi adicionado a lista de usuários.`, life: 3000 });
         this.fetchUsers();

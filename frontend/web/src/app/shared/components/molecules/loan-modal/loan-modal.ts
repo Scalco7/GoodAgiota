@@ -12,6 +12,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { ICoin } from '../../../../api/currency/list-coins/list-coins.interface';
+import { ICreateLoanRequest } from '../../../../api/loans/create-loan/create-loan.interface';
 
 export interface LoanData {
   user: string
@@ -35,7 +36,7 @@ export class LoanModalComponent {
   @Input() users: IUserResponse[] = []
   @Input() coins: ICoin[] = []
 
-  // @Output() createUser: EventEmitter<ICreateUserRequest> = new EventEmitter<ICreateUserRequest>();
+  @Output() createLoan: EventEmitter<ICreateLoanRequest> = new EventEmitter<ICreateLoanRequest>();
 
   public isLoading: boolean = false;
   public _isVisible: boolean = false;
@@ -81,8 +82,6 @@ export class LoanModalComponent {
   }
 
   public handleSave() {
-    console.log(this.loanForm)
-
     this.isLoading = true;
     this.validateForm();
     if (!this.loanForm.valid) {
@@ -90,11 +89,15 @@ export class LoanModalComponent {
       return
     }
 
-    // const userData: ICreateUserRequest = {
-    //   name: this.loanForm.value.name!,
-    //   phone: this.loanForm.value.phone!.replace(/\D/g, '')
-    // }
-    // this.createUser.emit(userData)
+    const loanData: ICreateLoanRequest = {
+      userId: (this.loanForm.value.selectedUser! as any).id,
+      loanValue: Number(this.loanForm.value.loanValue!),
+      loanDurationInMonths: Number(this.loanForm.value.loanDuration!),
+      coinCode: this.loanForm.value.coinCode!.simbolo,
+      loanRate: Number(this.loanForm.value.loanRate!),
+    }
+
+    this.createLoan.emit(loanData)
   }
 
   public getActualCurrency(coinCode: ICoin | null): string {

@@ -10,6 +10,9 @@ import { ListLoansRequest } from '../../api/loans/list-loans/list-loans.request'
 import { LoanModalComponent } from "../../shared/components/molecules/loan-modal/loan-modal";
 import { ListCoinsRequest } from '../../api/currency/list-coins/list-coins.request';
 import { ICoin } from '../../api/currency/list-coins/list-coins.interface';
+import { ICreateLoanRequest } from '../../api/loans/create-loan/create-loan.interface';
+import { CreateLoanRequest } from '../../api/loans/create-loan/create-loan.request';
+import { Formatter } from '../../shared/helpers/formatter';
 
 @Component({
   standalone: true,
@@ -37,6 +40,25 @@ export class LoansPage implements OnInit {
     this.fetchLoans()
     this.fetchUsers()
     this.fetchCoins()
+  }
+
+  private createLoan(loan: ICreateLoanRequest) {
+    this.requestsService.handle(new CreateLoanRequest(loan)).subscribe({
+      next: (result) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: "Empréstimo cadastrado",
+          detail: `Empréstimo de ${Formatter.formatCurrency(loan.loanValue, loan.coinCode)} cadastrado com sucesso.`,
+          life: 3000
+        });
+        this.fetchLoans();
+        this.loanModal.close();
+      },
+      error: (error) => {
+        console.log(error)
+        this.messageService.add({ severity: 'error', summary: error.title, detail: error.message, life: 3000 });
+      },
+    });
   }
 
   private fetchLoans() {
@@ -91,4 +113,8 @@ export class LoansPage implements OnInit {
   public openLoanModalCreate() {
     this.loanModal.open();
   }
+
+    public handleOnCreateLoan(loan: ICreateLoanRequest) {
+      this.createLoan(loan);
+    }
 }
